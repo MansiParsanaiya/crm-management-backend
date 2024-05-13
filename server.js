@@ -11,6 +11,9 @@ const courseRoutes = require('./routes/courseRoutes')
 const projectRoutes = require('./routes/projectRoutes')
 const taskRoutes = require('./routes/taskRoutes')
 
+const connection = require('./connect');
+
+
 var cors = require('cors');
 const branchController = require('./controllers/BranchController');
 
@@ -18,11 +21,12 @@ const app = express();
 app.use(cors())
 
 // server port
-const PORT = process.env.PORT || 8000;
-const mongoURL = "mongodb://localhost:27017/LoginRegisterComplete"
+
 
 // Connect to MongoDB
-mongoose.connect(mongoURL);
+// mongoose.connect(process.env.DB_URL);
+
+connection();
 
 // Middleware
 app.use(bodyParser.json());
@@ -39,6 +43,6 @@ app.use('/project', projectRoutes)
 app.use('/task', taskRoutes)
 
 // Start the server
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+app.listen(() => {
+  console.log(`Server is running on http://localhost:${process.env.PORT}`);
 });
