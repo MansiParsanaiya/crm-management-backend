@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -20,12 +21,7 @@ const branchController = require('./controllers/BranchController');
 const app = express();
 app.use(cors())
 
-// server port
-
-
 // Connect to MongoDB
-// mongoose.connect(process.env.DB_URL);
-
 connection();
 
 // Middleware
