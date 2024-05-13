@@ -17,6 +17,7 @@ const branchController = require('./controllers/BranchController');
 const app = express();
 app.use(cors())
 
+// server port
 const PORT = process.env.PORT || 8000;
 const mongoURL = "mongodb://localhost:27017/LoginRegisterComplete"
 
