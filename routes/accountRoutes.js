@@ -42,6 +42,7 @@ router.get('/viewExpense',  accountController.getAllExpense);
 router.get('/viewExpense/:branchId',  accountController.getExpense);
 router.get('/getExpense/:id', accountController.getoneExpense);
 router.get('/totalExpense',  accountController.totalExpense);
+router.get('/totalExpense/:branchId',  accountController.totalExpenseBranch)
 
 router.post('/addIncome',  accountController.addIncome);
 router.delete('/deleteIncome/:id',  accountController.deleteIncome);
@@ -50,6 +51,7 @@ router.get('/viewIncome',  accountController.getAllIncome);
 router.get('/viewIncome/:branchId',  accountController.getIncome);
 router.get('/getIncome/:id', accountController.getoneIncome);
 router.get('/totalIncome',  accountController.totalIncome)
+router.get('/totalIncome/:branchId',  accountController.totalIncomeBranch)
 
 
 module.exports = router;

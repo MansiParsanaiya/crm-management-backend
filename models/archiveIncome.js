@@ -1,19 +1,18 @@
 const mongoose = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate-v2');
 
-const incomeSchema = new mongoose.Schema({
+const archiveIncomeSchema = new mongoose.Schema({
     date: { type: Date, default: Date.now },
     title: { type: String , required: true },
     description: { type: String, required: true },
-    amount: { type: Number, required: true},
+    amount: { type: String, required: true},
     user: { type: String},
     branchId: { type: Number },
     lastEdit: {type : String},
     modeOfPayment: {type : String}
 });
 
-incomeSchema.plugin(mongoosePaginate);
 
-const Income = mongoose.model('Income', incomeSchema);
+const archiveIncome = mongoose.model('ArchiveIncome', archiveIncomeSchema);
 
-module.exports = Income;
+module.exports = archiveIncome;

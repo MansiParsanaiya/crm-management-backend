@@ -6,7 +6,25 @@ const JWT_SECRECT = "ewf98we789ew7v897vdcsc()EF*E(^FE"
 
 const getAllUsers = async (req, res) => {
   try {
-    const users = await User.find({}, { password: 0 }); // Exclude the password field
+    const { page, limit, search } = req.query;
+
+    const query = {};
+    const options = {
+      page: parseInt(page),
+      limit: parseInt(limit),
+    };
+
+    if (search !== undefined && search !== null && search !== "") {
+
+      query.$or = [
+        { username: { $regex: new RegExp(search, 'i') } },
+        { role: { $regex: new RegExp(search, 'i') } },
+        { email: { $regex: new RegExp(search, 'i') } },
+      ];
+
+    }
+    
+    const users = await User.paginate(query, options);
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -15,7 +33,7 @@ const getAllUsers = async (req, res) => {
 
 const getAdminUsers = async (req, res) => {
   try {
-    const users = await User.find({'role':'admin'}, { password: 0 }); // Exclude the password field
+    const users = await User.find({ 'role': 'admin' }, { password: 0 }); // Exclude the password field
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -24,7 +42,7 @@ const getAdminUsers = async (req, res) => {
 
 const getUserUsers = async (req, res) => {
   try {
-    const users = await User.find({'role':'user'}, { password: 0 }); // Exclude the password field
+    const users = await User.find({ 'role': 'user' }, { password: 0 }); // Exclude the password field
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -48,8 +66,8 @@ const getUserFromToken = async (req, res) => {
   } catch (error) {
     return res.status(401).json({ error: 'Invalid token' });
   }
-}; 
+};
 
 
 
-module.exports = { getAllUsers, getAdminUsers, getUserUsers , getUserFromToken};
+module.exports = { getAllUsers, getAdminUsers, getUserUsers, getUserFromToken };

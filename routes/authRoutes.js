@@ -7,5 +7,8 @@ const router = express.Router();
 router.post('/register', authController.register);
 router.post('/login', authController.login);
 router.post('/oneuser', authController.getOneUser);
+router.post('/approve', authController.userApprove);
+router.post('/reject', authController.userReject);
+router.post('/getUserWithActive',authController.getUserWithActive)
 
 module.exports = router;

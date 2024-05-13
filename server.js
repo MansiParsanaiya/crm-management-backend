@@ -5,6 +5,11 @@ const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const accountRoutes = require('./routes/accountRoutes');
 const branchRoutes = require('./routes/branchRoutes');
+const studentRoutes = require('./routes/studentRoutes');
+const feesRoutes = require('./routes/feesRoutes');
+const courseRoutes = require('./routes/courseRoutes')
+const projectRoutes = require('./routes/projectRoutes')
+const taskRoutes = require('./routes/taskRoutes')
 
 var cors = require('cors');
 const branchController = require('./controllers/BranchController');
@@ -26,6 +31,11 @@ app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
 app.use('/account', accountRoutes);
 app.use('/branch', branchRoutes);
+app.use('/student', studentRoutes)
+app.use('/fees', feesRoutes)
+app.use('/courses', courseRoutes)
+app.use('/project', projectRoutes)
+app.use('/task', taskRoutes)
 
 // Start the server
 app.listen(PORT, () => {
