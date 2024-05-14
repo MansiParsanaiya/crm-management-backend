@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const accountRoutes = require('./routes/accountRoutes');
@@ -14,7 +15,6 @@ const taskRoutes = require('./routes/taskRoutes')
 
 const connection = require('./connect');
 
-
 var cors = require('cors');
 const branchController = require('./controllers/BranchController');
 
@@ -23,6 +23,8 @@ app.use(cors())
 
 // Connect to MongoDB
 connection();
+
+const PORT = process.env.PORT || 8000;
 
 // Middleware
 app.use(bodyParser.json());
@@ -39,6 +41,6 @@ app.use('/project', projectRoutes)
 app.use('/task', taskRoutes)
 
 // Start the server
-app.listen(() => {
-  console.log(`Server is running on http://localhost:${process.env.PORT}`);
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
 });

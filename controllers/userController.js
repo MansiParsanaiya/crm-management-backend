@@ -23,7 +23,7 @@ const getAllUsers = async (req, res) => {
       ];
 
     }
-    
+
     const users = await User.paginate(query, options);
     res.status(200).json(users);
   } catch (error) {
@@ -35,6 +35,15 @@ const getAdminUsers = async (req, res) => {
   try {
     const users = await User.find({ 'role': 'admin' }, { password: 0 }); // Exclude the password field
     res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const test = async (req, res) => {
+  try {
+
+    res.send('hello world!');
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -70,4 +79,4 @@ const getUserFromToken = async (req, res) => {
 
 
 
-module.exports = { getAllUsers, getAdminUsers, getUserUsers, getUserFromToken };
+module.exports = { getAllUsers, getAdminUsers, getUserUsers, getUserFromToken, test };
