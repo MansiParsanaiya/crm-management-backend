@@ -8,37 +8,25 @@ const JWT_SECRECT = "ewf98we789ew7v897vdcsc()EF*E(^FE"
 const register = async (req, res) => {
   try {
     const { email, username, password } = req.body;
-
     const isFirstUser = (await User.countDocuments({})) === 0;
-    const role = isFirstUser ? 'admin' : 'user';
-
+   const role = isFirstUser ? 'admin' : 'user';
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: 'This email is already registered' });
     }
-
-
-
-
     const hashedPassword = await bcrypt.hash(password, 10);
-
     const user = new User({
       email,
       username,
       password: hashedPassword,
       role
     });
-
     const token = jwt.sign(
       { userId: user._id, username: user.username, email: user.email, role: user.role },
       JWT_SECRECT,
       { expiresIn: '12h' }
     );
-
-    // console.log(user);
-
     await user.save();
-
     res.status(201).json({
       token, role: user.role, username: user.username, email: user.email,
       message: 'ok', activeMsg: 'Registration successful, pending approval', isActive: user.isActive
@@ -104,7 +92,7 @@ const getUserWithActive = async (req, res) => {
     const { email } = req.body;
 
     const user = await User.findOne({ email });
-    
+
     res.status(200).json({ user });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -118,7 +106,7 @@ const userApprove = async (req, res) => {
     const user = await User.findOneAndUpdate(
       { email: email },
       { $set: { isActive: 'approved' } },
-      { new: true } 
+      { new: true }
     );
 
     if (user) {
@@ -138,7 +126,7 @@ const userReject = async (req, res) => {
     const user = await User.findOneAndUpdate(
       { email: email },
       { $set: { isActive: 'pending' } },
-      { new: true } 
+      { new: true }
     );
 
     if (user) {
@@ -151,4 +139,4 @@ const userReject = async (req, res) => {
   }
 };
 
-module.exports = { register, login, getOneUser , userApprove , userReject, getUserWithActive};
+module.exports = { register, login, getOneUser, userApprove, userReject, getUserWithActive };

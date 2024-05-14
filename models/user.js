@@ -6,10 +6,11 @@ const userSchema = new mongoose.Schema({
   username: { type: String, required: true },
   password: { type: String, required: true },
   role: { type: String, enum: ['user', 'admin'], default: 'user' },
-  isActive: { type: String, default: 'pending'}
+  isActive: { type: String, enum: ['pending', 'approved'] }
+  // isActive: { type: String, enum: ['pending', 'approved'], default: 'pending' }
 });
 
 userSchema.plugin(mongoosePaginate);
 
-const Users = mongoose.model('user_users', userSchema);
-module.exports = Users;
+const User = mongoose.model('user_users', userSchema);
+module.exports = User;
