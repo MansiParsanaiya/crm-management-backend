@@ -167,7 +167,6 @@ module.exports.updateProjectDetailsInTasks = async (req, res) => {
     }
 };
 
-
 module.exports.getTasksByUserAndTime = async (req, res) => {
     const { user } = req.params;
 

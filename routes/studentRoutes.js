@@ -9,7 +9,4 @@ router.delete('/deleteStudent/:id', studentController.deletedStudent);
 router.put('/updateStudent/:id', studentController.updateStudent);
 router.get('/getoneStudent/:id', studentController.getoneStudent);
 
-
-
-
 module.exports = router;

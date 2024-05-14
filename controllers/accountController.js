@@ -56,7 +56,6 @@ module.exports.getIncome = async (req, res) => {
     }
 };
 
-
 module.exports.getAllIncome = async (req, res) => {
     const income = await Income.find({}, { __v: 0 });
     res.send(income);
@@ -169,7 +168,6 @@ module.exports.totalIncomeBranch = async (req, res) => {
     res.json(responseData);
 
 };
-
 
 module.exports.getExpense = async (req, res) => {
     try {

@@ -77,7 +77,6 @@ module.exports.getAllStudents = async (req, res) => {
     }
 };
 
-
 module.exports.updateStudent = async (req, res) => {
 
     const { id } = req.params;

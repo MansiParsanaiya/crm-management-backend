@@ -40,15 +40,6 @@ const getAdminUsers = async (req, res) => {
   }
 };
 
-const test = async (req, res) => {
-  try {
-
-    res.send('hello world!');
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
 const getUserUsers = async (req, res) => {
   try {
     const users = await User.find({ 'role': 'user' }, { password: 0 }); // Exclude the password field

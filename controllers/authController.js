@@ -111,7 +111,6 @@ const getUserWithActive = async (req, res) => {
   }
 };
 
-
 const userApprove = async (req, res) => {
   try {
     const { email } = req.body;

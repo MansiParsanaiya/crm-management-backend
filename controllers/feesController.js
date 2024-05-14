@@ -73,7 +73,6 @@ module.exports.updateInstallmentById = async (req, res) => {
     }
 };
 
-
 module.exports.getInstallmentsByStudentIdAll = async (req, res) => {
     const { studentNumber } = req.params;
 
