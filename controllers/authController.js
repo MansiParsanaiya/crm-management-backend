@@ -9,7 +9,7 @@ const register = async (req, res) => {
   try {
     const { email, username, password } = req.body;
     const isFirstUser = (await User.countDocuments({})) === 0;
-   const role = isFirstUser ? 'admin' : 'user';
+    const role = isFirstUser ? 'admin' : 'user';
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: 'This email is already registered' });

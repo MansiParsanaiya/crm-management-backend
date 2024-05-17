@@ -1,35 +1,62 @@
-const Student = require('../models/student'); 
+const Student = require('../models/student');
 const ArchiveStudent = require("../models/archiveStudent")
-const Fees = require('../models/fees'); 
+const Fees = require('../models/fees');
 const Income = require("../models/income")
 
+// module.exports.addStudent = async (req, res) => {
+//     const { studentName, studentNumber, fatherName, motherName, parentNumber, college, qualification, aadharCard, feesPay, amountPay, remainingFees, modeOfPayment, address, courseName, branch } = req.body;
+//     Student.create({ studentName, studentNumber, fatherName, motherName, parentNumber, college, qualification, aadharCard, feesPay, amountPay, remainingFees, modeOfPayment, address, courseName, branch })
+//         .then((data) => {
+//             console.log("Saved successfully");
+//             const feeDetails = new Fees({
+//                 studentName,
+//                 studentNumber,
+//                 feesPay,
+//                 amountPay,
+//                 amountPaid: feesPay - remainingFees,
+//                 remainingFees,
+//                 modeOfPayment,
+//                 installIncomeId: "1"
+//             });
+//             feeDetails.save();
+//             res.status(201).send(data);
+//         }).catch((err) => {
+//             console.log(err);
+//             res.send({ error: err, msg: "Something went wrong" })
+//         })
+// };
 
 module.exports.addStudent = async (req, res) => {
-   
-    const { studentName, studentNumber, fatherName, motherName, parentNumber, college, qualification, aadharCard, feesPay, amountPay, remainingFees,  modeOfPayment,address,courseName, branch } = req.body;
+    try {
+        const { studentName, studentNumber, feesPay, amountPay, remainingFees, modeOfPayment, courseName } = req.body;
 
-    Student.create({ studentName, studentNumber, fatherName, motherName, parentNumber, college, qualification, aadharCard, feesPay,  amountPay, remainingFees, modeOfPayment,address,courseName,branch })
-        .then((data) => {
-            console.log("Saved successfully");
-            const feeDetails = new Fees({
-                studentName,
-                studentNumber,
-                feesPay, 
-                amountPay,
-                amountPaid:feesPay-remainingFees,
-                remainingFees,
-                modeOfPayment,
-                installIncomeId:"1"
-            });
-    
-            feeDetails.save();
+        // Generate enrollmentNumber
+        const enrollmentNumber = await Student.getNextEnrollmentNumber();
 
-            res.status(201).send(data);
-        }).catch((err) => {
-            console.log(err);
-            res.send({ error: err, msg: "Something went wrong" })
-        })
+        const student = new Student({
+            ...req.body,
+            enrollmentNumber
+        });
+        await student.save();
 
+        const amountPaid = feesPay - remainingFees;
+
+        const fees = new Fees({
+            studentName,
+            studentNumber,
+            feesPay,
+            amountPay,
+            amountPaid,
+            remainingFees,
+            modeOfPayment,
+            installIncomeId: "1"
+        });
+        await fees.save();
+
+        res.status(201).send(student);
+    } catch (error) {
+        res.status(400).send(error);
+    }
 };
 
 module.exports.getAllStudents = async (req, res) => {
@@ -37,17 +64,17 @@ module.exports.getAllStudents = async (req, res) => {
     try {
         const { page, limit, search } = req.query;
 
-        const query={};
+        const query = {};
         const options = {
             page: parseInt(page),
             limit: parseInt(limit),
         };
 
 
-    
-        console.log(search,"i m calling from getapi search value")
-        if (search !== undefined && search !== null && search!=="") {
-            if (!isNaN(search)) { 
+
+        console.log(search, "i m calling from getapi search value")
+        if (search !== undefined && search !== null && search !== "") {
+            if (!isNaN(search)) {
                 query.$or = [
                     { feesPay: parseFloat(search) },
                     { amountPay: parseFloat(search) },
@@ -69,7 +96,7 @@ module.exports.getAllStudents = async (req, res) => {
         }
 
 
-        const students = await Student.paginate(query,options);
+        const students = await Student.paginate(query, options);
         res.status(200).json(students);
     } catch (error) {
         console.error('Error fetching incomes:', error);
@@ -80,7 +107,7 @@ module.exports.getAllStudents = async (req, res) => {
 module.exports.updateStudent = async (req, res) => {
 
     const { id } = req.params;
-    const { studentName, studentNumber, fatherName, motherName, parentNumber, college, qualification, aadharCard, feesPay,  amountPay, remainingFees, modeOfPayment,address,courseName ,branch} = req.body;
+    const { studentName, studentNumber, fatherName, motherName, parentNumber, college, qualification, aadharCard, feesPay, amountPay, remainingFees, modeOfPayment, address, courseName, branch } = req.body;
 
     try {
         // const student = await Student.findById(id);
@@ -102,7 +129,7 @@ module.exports.updateStudent = async (req, res) => {
 
         // await firstEntry.save();
 
-        const updatedStudent = await Student.findByIdAndUpdate(id, { studentName, studentNumber, fatherName, motherName, parentNumber, college, qualification, aadharCard, feesPay,  amountPay, remainingFees, modeOfPayment,address,courseName, branch }, { new: true });
+        const updatedStudent = await Student.findByIdAndUpdate(id, { studentName, studentNumber, fatherName, motherName, parentNumber, college, qualification, aadharCard, feesPay, amountPay, remainingFees, modeOfPayment, address, courseName, branch }, { new: true });
 
         console.log("Update successfully");
         res.status(201).send({ data: updatedStudent });
