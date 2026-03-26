@@ -26,12 +26,12 @@ const Income = require("../models/income")
 //         })
 // };
 
+
 module.exports.addStudent = async (req, res) => {
     try {
         const { studentName, studentNumber, feesPay, amountPay, remainingFees, modeOfPayment, courseName } = req.body;
-
-        // Generate enrollmentNumber
-        const enrollmentNumber = await Student.getNextEnrollmentNumber();
+        const companyName = "VH"; 
+        const enrollmentNumber = await Student.getNextEnrollmentNumber(companyName, courseName);
 
         const student = new Student({
             ...req.body,
@@ -52,12 +52,42 @@ module.exports.addStudent = async (req, res) => {
             installIncomeId: "1"
         });
         await fees.save();
-
         res.status(201).send(student);
     } catch (error) {
         res.status(400).send(error);
     }
 };
+
+// module.exports.addStudent = async (req, res) => {
+//     try {
+//         const { studentName, studentNumber, feesPay, amountPay, remainingFees, modeOfPayment, courseName } = req.body;
+//         const enrollmentNumber = await Student.getNextEnrollmentNumber();
+
+//         const student = new Student({
+//             ...req.body,
+//             enrollmentNumber
+//         });
+//         await student.save();
+
+//         const amountPaid = feesPay - remainingFees;
+
+//         const fees = new Fees({
+//             studentName,
+//             studentNumber,
+//             feesPay,
+//             amountPay,
+//             amountPaid,
+//             remainingFees,
+//             modeOfPayment,
+//             installIncomeId: "1"
+//         });
+//         await fees.save();
+
+//         res.status(201).send(student);
+//     } catch (error) {
+//         res.status(400).send(error);
+//     }
+// };
 
 module.exports.getAllStudents = async (req, res) => {
 

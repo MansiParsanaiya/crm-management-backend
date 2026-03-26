@@ -11,4 +11,6 @@ router.post('/approve', authController.userApprove);
 router.post('/reject', authController.userReject);
 router.post('/getUserWithActive',authController.getUserWithActive)
 
+router.get('/totalCount', authController.totalCount);
+
 module.exports = router;

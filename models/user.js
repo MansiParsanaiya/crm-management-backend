@@ -11,5 +11,13 @@ const userSchema = new mongoose.Schema({
 
 userSchema.plugin(mongoosePaginate);
 
+// Pre-save hook to auto-approve admin users
+userSchema.pre('save', function(next) {
+  if (this.role === 'admin') {
+    this.isActive = 'approved';
+  }
+  next();
+});
+
 const User = mongoose.model('user_users', userSchema);
 module.exports = User;

@@ -139,4 +139,15 @@ const userReject = async (req, res) => {
   }
 };
 
-module.exports = { register, login, getOneUser, userApprove, userReject, getUserWithActive };
+
+const totalCount = async (req, res) => {
+  try {
+    const count = await User.countDocuments();
+    res.json(count);   // send number only
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+module.exports = { register, login, getOneUser, userApprove, userReject, getUserWithActive , totalCount};

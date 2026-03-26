@@ -69,4 +69,6 @@ const getUserFromToken = async (req, res) => {
 };
 
 
+
+
 module.exports = { getAllUsers, getAdminUsers, getUserUsers, getUserFromToken };
